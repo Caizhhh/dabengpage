@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>达本搜索引擎</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f5f5f5;
+      margin: 0;
+      padding: 0;
+    }
+
+    #header {
+      background-color: #fff;
+      padding: 20px;
+      border-bottom: 1px solid #ddd;
+      height: 150px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    #logo {
+      margin-right: 20px;
+      display: inline-block;
+      vertical-align: middle;
+      position: relative;
+    }
+
+    #logo img {
+      height: 60px;
+    }
+
+    #logo span {
+      font-size: 14px;
+      color: #999;
+      margin-left: 5px;
+    }
+
+    #settings {
+      display: flex;
+      align-items: center;
+    }
+
+    #dark-mode-button {
+      background: linear-gradient(to right, #0044ff, #00ccff);
+      color: #fff;
+      padding: 10px 20px;
+      font-size: 16px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-left: 20px;
+      transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+
+    #dark-mode-button:hover {
+      background: linear-gradient(to right, #00ccff, #0044ff);
+    }
+
+    #search-form {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 30px;
+      background-color: #fff;
+      border-radius: 10px;
+      box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      margin-top: 150px;
+      transition: transform 0.3s ease;
+    }
+
+    #search-form:hover {
+      transform: scale(1.05);
+    }
+
+    #search-form input[type="text"] {
+      width: 100%;
+      padding: 15px;
+      font-size: 16px;
+      border: 2px solid transparent;
+      border-radius: 10px;
+      box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.1);
+      outline: none;
+      background-color: #f0f0f0;
+      transition: border 0.3s ease, background-color 0.3s ease;
+    }
+
+    #search-form input[type="text"]:hover,
+    #search-form input[type="text"]:focus {
+      border: 2px solid #00cc00;
+    }
+
+    #search-form input[type="submit"] {
+      background: linear-gradient(to right, #0044ff, #00ccff);
+      color: #fff;
+      padding: 12px 25px;
+      font-size: 16px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+
+    #search-form input[type="submit"]:hover {
+      background: linear-gradient(to right, #00ccff, #0044ff);
+      transform: scale(1.1);
+    }
+
+    #footer {
+      background-color: #fff;
+      padding: 20px;
+      border-top: 1px solid #ddd;
+      text-align: center;
+      font-size: 14px;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+    }
+
+    #footer a {
+      color: #666;
+      text-decoration: none;
+    }
+
+    #footer a:hover {
+      color: #3385ff;
+    }
+
+    /* 弹窗样式 */
+    #popup {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: #fff;
+      width: 300px;
+      height: 150px;
+      border-radius: 10px;
+      box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      padding: 20px;
+      display: none;
+    }
+
+    #popup p {
+      font-size: 18px;
+      margin: 0;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    #popup button {
+      background-color: #3385ff;
+      color: #fff;
+      padding: 10px 20px;
+      font-size: 16px;
+      border: none;
+      border : 5px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    #popup button:hover {
+      background-color: #1a5cc2;
+    }
+
+    /* 深色模式样式 */
+    body.dark-mode {
+      background-color: #333;
+      color: #fff;
+    }
+
+    body.dark-mode #header,
+    body.dark-mode #footer {
+      background-color: #222;
+      color: #fff;
+    }
+
+    body.dark-mode #search-form {
+      background-color: #222;
+    }
+
+    body.dark-mode #search-form input[type="text"] {
+           color: #fff;
+      background-color: #444;
+    }
+
+    body.dark-mode #popup {
+      background-color: #222;
+      color: #fff;
+    }
+
+    /* 深色模式下的按钮样式 */
+    #dark-mode-button.dark-mode {
+      background: linear-gradient(to right, #0044ff, #00ccff);
+      color: #fff;
+    }
+
+    #dark-mode-button.dark-mode:hover {
+      background: linear-gradient(to right, #00ccff, #0044ff);
+    }
+
+    /* 添加背景图片 */
+    body {
+      background-image: url('https://s1.ax1x.com/2023/08/11/pPnoNgf.jpg');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+    }
+
+    /* 深色模式下的背景图片 */
+    body.dark-mode {
+      background-image: url('https://s1.ax1x.com/2023/08/11/pPnot8P.jpg');
+    }
+
+    /* 深色模式切换动画 */
+    body, #dark-mode-button, #search-form, #popup {
+      transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+
+    /* 深色模式按钮位置 */
+    #settings {
+      display: flex;
+      align-items: center;
+    }
+
+    /* 版本更新提示弹窗样式 */
+    #popup {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: #fff;
+      width: 300px;
+      height: 200px;
+      border-radius: 10px;
+      box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      padding: 20px;
+      display: none;
+      font-family: Arial, sans-serif;
+    }
+
+    #popup h2 {
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+
+    #popup p {
+      font-size: 16px;
+      margin-bottom: 20px;
+    }
+
+    #popup button {
+      background-color: #3385ff;
+      color: #fff;
+      padding: 10px 20px;
+      font-size: 16px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    #popup button:hover {
+      background-color: #1a5cc2;
+    }
+  </style>
+</head>
+
+<body>
+  <header id="header">
+    <div id="logo">
+      <a href="https://www.baidu.com/">
+       <a href="https://imgse.com/i/pPno3Ed"><img         src="https://s1.ax1x.com/2023/08/11/pPno3Ed.png" alt="pPno3Ed.png" border="0" /></a>
+        <span>全球领先的中文搜索引擎、致力于让网民更便捷地获取信息，找到所求</span>
+      </a>
+    </div>
+    <div id="settings">
+      <div id="dark-mode-button" class="dark-mode" onclick="toggleDarkMode()">深色模式</div>
+    </div>
+  </header>
+
+  <form id="search-form" action="https://www.baidu.com/s" method="get">
+    <input type="text" name="wd" placeholder="在这里搜索..." autocomplete="off">
+    <input type="submit" value="搜索">
+  </form>
+
+  <footer id="footer">
+    <p>国际开源项目 · 2023 </p>
+    <p><a href="#"></a> | <a href="#">内核版本V1.0</a> | <a href="#">版本号V1.42</a> | <a href="#">UI版本V1.2</a> | <a href="#">搜索引擎：百度</a> | <a href="#">网站最后更新时间：2023年08月11日</a></p>
+  </footer>
+
+  <!-- 弹窗内容 -->
+  <div id="popup">
+    <h2>关于</h2>
+    <p>版本号：V1.42</p>
+    <p>本次更新2023/8/11<br>优化图片引擎<br>去掉精简版<br><br><br></p>
+    <button onclick="hidePopup()">我知道了</button>
+  </div>
+
+  <!-- 弹窗脚本 -->
+  <script>
+    function showPopup() {
+      document.getElementById("popup").style.display = "block";
+    }
+
+    function hidePopup() {
+      document.getElementById("popup").style.display = "none";
+    }
+
+    function toggleDarkMode() {
+      const body = document.body;
+      const darkModeButton = document.getElementById("dark-mode-button");
+
+      body.classList.toggle("dark-mode");
+      darkModeButton.classList.toggle("dark-mode");
+
+      if (body.classList.contains("dark-mode")) {
+        darkModeButton.innerText = "浅色模式";
+      } else {
+        darkModeButton.innerText = "深色模式";
+      }
+    }
+  </script>
+</body>
+
+</html>
+
